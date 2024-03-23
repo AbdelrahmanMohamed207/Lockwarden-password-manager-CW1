@@ -101,11 +101,40 @@ void listSavedPasswords(const std::string& username) {
 }
 
 void displayUserMenu() {
-    std::cout << "User Menu:\n";
-    std::cout << "1. Generate and save a new password\n";
-    std::cout << "2. List all saved passwords\n";
-    std::cout << "3. Logout\n";
-    std::cout << "Enter your choice: ";
+    std::cout << "Welcome to your Menu make your choice:\n";
+    std::cout << "1. > Generate and save a new password\n";
+    std::cout << "2. > List all saved passwords\n";
+    std::cout << "3. > Logout\n";
+    std::cout << "4. > Delete Account\n";
+    std::cout << "5. > Update Password\n"; // Updated text for clarity
+    std::cout << "> Enter your choice: ";
+}
+
+void deleteAccount(const std::string& username) {
+    std::string filename = username + "_data.txt";
+    if (remove(filename.c_str()) != 0) {
+        std::cerr << "Error deleting account.\n";
+    }
+    else {
+        std::cout << "Account deleted successfully.\n";
+    }
+}
+
+void updatePassword(const std::string& username) {
+    std::string newPassword;
+    std::cout << "Enter your new password: ";
+    std::cin >> newPassword;
+
+    // Assuming you want to overwrite the existing file with new password
+    std::ofstream userFile(username + "_data.txt");
+    if (userFile.is_open()) {
+        userFile << "Username: " << username << "\nPassword Hash: " << hashPassword(newPassword) << "\n";
+        std::cout << "Password updated successfully.\n";
+    }
+    else {
+        std::cerr << "Error updating password.\n";
+    }
+    userFile.close();
 }
 
 void login() {

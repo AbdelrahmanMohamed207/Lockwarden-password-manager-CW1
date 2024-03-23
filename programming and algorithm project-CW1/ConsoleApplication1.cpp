@@ -152,13 +152,20 @@ void login() {
             std::cin >> userChoice;
             switch (userChoice) {
             case 1: {
-                std::string website, genPassword;
-                std::cout << "Enter website for the new password: ";
+                std::string website;
+                std::cout << "Enter the website for which you want to generate a password: ";
                 std::cin >> website;
-                genPassword = generatePassword(12);
-                std::cout << "Generated password: " << genPassword << std::endl;
-                savePassword(username, website, genPassword);
-                std::cout << "Password saved successfully for " << website << ".\n";
+
+                // Optional: Let user choose the password length or set a default value
+                int length = 12; // Default length
+                std::cout << "Enter password length (Recommended: 12): ";
+                std::cin >> length;
+
+                std::string newPassword = generatePassword(length);
+                std::cout << "Generated Password: " << newPassword << std::endl;
+
+                savePassword(username, website, newPassword);
+                std::cout << "Password saved successfully!" << std::endl;
                 break;
             }
             case 2:
@@ -167,10 +174,17 @@ void login() {
             case 3:
                 std::cout << "Logging out...\n";
                 break;
+            case 4:
+                deleteAccount(username);
+                return; // Exit after deleting account
+            case 5:
+                updatePassword(username);
+                std::cout << "Please log in again with your new password.\n";
+                return; // Suggesting re-login after password change for validation
             default:
                 std::cout << "Invalid choice, please try again.\n";
             }
-        } while (userChoice != 3);
+        } while (userChoice != 3 && userChoice != 4 && userChoice != 5);
     }
     else {
         std::cout << "Invalid username or password.\n";
